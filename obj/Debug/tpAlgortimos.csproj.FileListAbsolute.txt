@@ -1,0 +1,5 @@
+C:\Users\eze\Documents\SharpDevelop Projects\Nueva carpeta\tpAlgoritmo\tpAlgortimos\bin\Debug\tpAlgortimos.exe
+C:\Users\eze\Documents\SharpDevelop Projects\Nueva carpeta\tpAlgoritmo\tpAlgortimos\bin\Debug\tpAlgortimos.pdb
+C:\Users\eze\Documents\SharpDevelop Projects\Nueva carpeta\tpAlgoritmo\tpAlgortimos\obj\Debug\tpAlgortimos.csprojResolveAssemblyReference.cache
+C:\Users\eze\Documents\SharpDevelop Projects\Nueva carpeta\tpAlgoritmo\tpAlgortimos\obj\Debug\tpAlgortimos.exe
+C:\Users\eze\Documents\SharpDevelop Projects\Nueva carpeta\tpAlgoritmo\tpAlgortimos\obj\Debug\tpAlgortimos.pdb
