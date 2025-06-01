@@ -15,26 +15,199 @@ namespace tpAlgortimos
 	{
 		public static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
+			 //creo instancia de empresa
+			Empresa empresa=new Empresa();
+		
 			
-			// TODO: Implement Functionality Here
-			Console.WriteLine("hola");
 			
-			Console.Write("Press any key to continue . . . ");
+			
+			Console.WriteLine("-----------------------------------------------------------");
+			Console.WriteLine("Ingrese la opcion deseada (para finalizar escriba `0´) :");
+			Console.WriteLine("1- Contratar un nuevo obrero");
+			Console.WriteLine("2- eliminar un obreros");
+			Console.WriteLine("3- Submenú de impresión: listado de obreros, de obras en ejecución con más del 50% de avance, de obras finalizadas y de jefes");
+			Console.WriteLine("4- Agregar una obra y asignarle un jefe. Se debe crear el jefe y asociarle el grupo de obreros que va a dirigir. Verificar que haya grupo libre; en caso contrario se debe levantar una excepción que informe lo sucedido.");
+			Console.WriteLine("5- Modificar el estado de avance de una obra. Si el estado de avance llega al 100% la obra debe darse por finalizada, se elimina del listado de obras en ejecución y se guarda en el de obras finalizadas");
+			Console.WriteLine("6- Dar de baja a un jefe ");
+			Console.WriteLine("-----------------------------------------------------------");
+			int opcion=int.Parse(Console.ReadLine());
+			
+			while (opcion!=0) {
+						//agrego un obrero a la empresa y al grupo obrero
+				switch (opcion) {
+					case 1:
+						AgregarObrero(empresa);
+						break;
+					case 2:
+						Eliminar_Obrero(empresa);
+						break;
+					case 3:
+						SubmenudeImpresion(empresa);
+						break;
+					default:
+						Console.WriteLine("Opción no válida.");
+						break;				}
+
+				Console.WriteLine("-----------------------------------------------------");
+		    Console.WriteLine("Ingrese la opcion deseada (para finalizar escriba `0´) :");
+			Console.WriteLine("1- Contratar un nuevo obrero");
+			Console.WriteLine("2- eliminar un obreros");
+			Console.WriteLine("3- Submenú de impresión: listado de obreros, de obras en ejecución con más del 50% de avance, de obras finalizadas y de jefes");
+			Console.WriteLine("4- Agregar una obra y asignarle un jefe. Se debe crear el jefe y asociarle el grupo de obreros que va a dirigir. Verificar que haya grupo libre; en caso contrario se debe levantar una excepción que informe lo sucedido.");
+			Console.WriteLine("5- Modificar el estado de avance de una obra. Si el estado de avance llega al 100% la obra debe darse por finalizada, se elimina del listado de obras en ejecución y se guarda en el de obras finalizadas");
+			Console.WriteLine("6- Dar de baja a un jefe ");
+			Console.WriteLine("---------------------------------------------------------");
+			opcion=int.Parse(Console.ReadLine());
+			}
+           Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
 		}
+		public static void AgregarObrero(Empresa emp){
+						Console.WriteLine("Ingrese los datos del Obrero: ");
+						Console.WriteLine("Ingrese el nombre y apellido: ");
+						string nombyape=Console.ReadLine();
+						Console.WriteLine("Ingrese Dni");
+						int dni=int.Parse(Console.ReadLine());
+						Console.WriteLine("Ingrese Legajo:");
+						int legajo=int.Parse(Console.ReadLine());
+						Console.WriteLine("Ingrese sueldo:");
+						double sueldo=double.Parse(Console.ReadLine());
+						Console.WriteLine("Ingrese cargo: ");
+						string cargo=Console.ReadLine();
+						Obrero persona=new Obrero(nombyape,dni,legajo,sueldo,cargo);
+						emp.ContratarObrero(persona);//se agrega obrero a la empresa
+					
+						Grupo asignogrupo;
+						if(emp.GRUPOS.Count>0){
+							asignogrupo=(Grupo)emp.GRUPOS[0]; //tomo la primer posicion de la lista y le asigno para agregarlo al obrero
+							Console.WriteLine("se agrego al primer grupo ");
+						}
+						else{
+							//si no encuentra grupo, crea y lo agrega a la empresa
+							
+							asignogrupo=new Grupo();
+							emp.AgregarGrupo(asignogrupo); //Agrega un nuevo grupo a la lista general de grupos que maneja la empresa
+							Console.WriteLine("se crea nuevo grupo y asigno al obrero");
+						}
+						asignogrupo.AgregarObrero(persona); //Agrega un obrero a la lista de obreros que forman parte de ese grupo
+		}
+		public static void Eliminar_Obrero(Empresa empresa){
+			Console.WriteLine("ingrese el Dni del obrero que desea eliminar");
+			int dni=int.Parse(Console.ReadLine());
+			
+			if (empresa.ExisteObrero(dni)) {
+				Obrero obreroaeliminar=empresa.ObtenerObrero(dni);
+				Grupo grupo=empresa.ObtenerObrerogrupo(dni);
+				
+				if(grupo !=null){
+					grupo.EliminarObrero(obreroaeliminar);
+				}
+				
+				
+				
+				empresa.EliminaObrero(obreroaeliminar);
+				Console.WriteLine("obrero eliminado correctamente");
+				
+			}
+			else{
+				Console.WriteLine("el obrero no fue encontrado");
+			}
+			
+			
+		
+		
+		}
+		public static void SubmenudeImpresion(Empresa construccion){
+			Console.WriteLine("--------------------------------");
+		Console.WriteLine("Submenú de Impresión:");
+  		 Console.WriteLine("1- Listado de obreros");
+    	 Console.WriteLine("2- Listado de obras en ejecución con más del 50% de avance");
+    	 Console.WriteLine("3- Listado de obras finalizadas");
+   		 Console.WriteLine("4- Listado de jefes");
+   		 Console.WriteLine("-------------------------------");
+   		 int op=int.Parse(Console.ReadLine());
+   		 switch (op) {
+   		 	case 1:
+   		 		construccion.ListarObreros();
+   		 		break;
+   		 	default:
+   		 		Console.WriteLine("Opción no válida.");
+   		 		break;
+   		 }
+		}
+		
 	}
 	class Empresa{
 		//Atributos
 		private ArrayList Obras;
 		private ArrayList Obreros;
 		private ArrayList ObrasFinalizadas;
+		private ArrayList Grupos;
 		//Constructor
 		public Empresa(){
 			this.Obras=new ArrayList();
 			this.Obreros=new ArrayList();
 			this.ObrasFinalizadas=new ArrayList();
+			this.Grupos=new ArrayList();
 		}
+		//metodos
+		public Obrero ObtenerObrero(int dni){
+			foreach(Obrero elem in this.Obreros){
+				if(dni==elem.DNIOBRERO){
+					return elem;
+				}
+			}
+			return null;
+		}
+		public Grupo ObtenerObrerogrupo(int dni){
+			foreach(Grupo elem in this.Grupos){
+				foreach(Obrero emp in elem.INTEGRANTES){
+				if(dni==emp.DNIOBRERO){
+					return elem;
+				}
+				}}
+			return null;
+		}
+	
+			
+			
+		//se agrega un obrero a la lista de obreros
+		public void ContratarObrero(Obrero obrero){
+			this.Obreros.Add(obrero);
+		}
+		public void EliminaObrero(Obrero obr){
+			this.Obreros.Remove(obr);
+			
+		}
+		//Agrega un nuevo grupo a la lista general de grupos que maneja la empresa
+		public void AgregarGrupo(Grupo g) {
+  			this.Grupos.Add(g);
+     }
+		public void EliminarGrupo(Grupo g){
+			this.Grupos.Remove(g);
+		}
+		public bool ExisteObrero(int dni){
+			foreach (Obrero elem in this.Obreros) {
+				if(dni==elem.DNIOBRERO){
+					return true;
+				}
+			}
+			return false;
+			
+		}
+		public void ListarObreros(){
+		 foreach (Obrero element in this.Obreros)
+		 { 
+        Console.WriteLine("Nombre y Apellido: " + element.NOMYAPE);
+        Console.WriteLine("Dni: " + element.DNIOBRERO);
+        Console.WriteLine("Cargo: " + element.CARGO);
+        Console.WriteLine("------------------------");
+		 	}
+		
+		
+		
+		}
+
 		
 		
 		//Propiedades
@@ -47,6 +220,9 @@ namespace tpAlgortimos
 		public ArrayList OBRASFINALIZADAS{
 			get{return this.ObrasFinalizadas;}
 		}
+		public ArrayList GRUPOS {
+            get { return this.Grupos; }
+        }
 		
 	}
 
@@ -66,8 +242,9 @@ namespace tpAlgortimos
 		private double EstadoAvance;
 		private JefedeObra jefedeobra;
 		private double costo;
+		private Grupo grupoAsignado;
 		//constructor
-		public Obra(string no,int dp,int ci, string tp,double ea, JefedeObra j,double c){
+		public Obra(string no,int dp,int ci, string tp,double ea, JefedeObra j,double c,Grupo grup){
 			this.NomObra=no;
 			this.DniPropietario=dp;
 			this.CodigoInterno=ci;
@@ -75,6 +252,7 @@ namespace tpAlgortimos
 			this.EstadoAvance=ea;
 			this.jefedeobra=j;
 			this.costo=c;
+			this.grupoAsignado=grup;
 		}
 		
 		
@@ -106,6 +284,10 @@ namespace tpAlgortimos
 		public double COSTO{
 			get{return this.costo;}
 			set{this.costo=value;}
+		}
+		public Grupo GRUPOASIGNADO{
+			get{return this.grupoAsignado;}
+			set{this.grupoAsignado=value;}
 		}
 						
 	}
@@ -161,16 +343,43 @@ namespace tpAlgortimos
 class JefedeObra:Obrero{
 	//Atributo
 	private double bonificacion;
+	private Obra ObraAsignada;
 	//Constructor
-	public JefedeObra(string nya,int d,int l,double s,string c,double b):base(nya,d,l,s,c){
+	public JefedeObra(string nya,int d,int l,double s,string c,double b,Obra oas):base(nya,d,l,s,c){
 		this.bonificacion=b;
+		this.ObraAsignada=oas;
 	}
 	//Propiedades
 	public double BONIFICACION{
 		get{return this.bonificacion;}
 		set{this.bonificacion=value;}
 	}
+	public Obra OBRAASIGNADA{
+		get{return this.ObraAsignada;}
+		set{this.ObraAsignada=value;}
+	}
 	
 }
+class Grupo {
+	//Atributos
+	private ArrayList integrantes;
+	//constructor
+	public Grupo() {
+		this.integrantes = new ArrayList();
+	}
+	    // metodo para agregar un obrero al grupo
+    public void AgregarObrero(Obrero obrero) {
+        this.integrantes.Add(obrero);
+    }
+	    public void EliminarObrero(Obrero ob){
+	    	this.integrantes.Remove(ob);
+	    }
+
+	//propiedad
+	public ArrayList INTEGRANTES {
+		get { return this.integrantes; }
+	}
+}
+
 
 }
