@@ -6,6 +6,7 @@
  * 
  * Para cambiar esta plantilla use Herramientas | Opciones | Codificación | Editar Encabezados Estándar
  */
+
 using System;
 using System.Collections;
 
@@ -18,7 +19,9 @@ namespace tpAlgortimos
 			 //creo instancia de empresa
 			Empresa empresa=new Empresa();
 		
-			
+//			Obra ob=new Obra("nombre",4545,45,"remodelacion",12,JefedeObra jede,4545,Grupo Grupo);
+			             
+	  
 			
 			
 			Console.WriteLine("-----------------------------------------------------------");
@@ -59,9 +62,17 @@ namespace tpAlgortimos
 			Console.WriteLine("---------------------------------------------------------");
 			opcion=int.Parse(Console.ReadLine());
 			}
-           Console.Write("Press any key to continue . . . ");
+			
+			
+			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
 		}
+		
+		
+		
+		
+		
+		
 		public static void AgregarObrero(Empresa emp){
 						Console.WriteLine("Ingrese los datos del Obrero: ");
 						Console.WriteLine("Ingrese el nombre y apellido: ");
@@ -91,6 +102,11 @@ namespace tpAlgortimos
 						}
 						asignogrupo.AgregarObrero(persona); //Agrega un obrero a la lista de obreros que forman parte de ese grupo
 		}
+		
+		
+		
+		
+		
 		public static void Eliminar_Obrero(Empresa empresa){
 			Console.WriteLine("ingrese el Dni del obrero que desea eliminar");
 			int dni=int.Parse(Console.ReadLine());
@@ -100,12 +116,13 @@ namespace tpAlgortimos
 				Grupo grupo=empresa.ObtenerObrerogrupo(dni);
 				
 				if(grupo !=null){
-					grupo.EliminarObrero(obreroaeliminar);
+					grupo.EliminarObrero(obreroaeliminar);//elimina obreo del grupo(lista integrantes)
+					
 				}
 				
+				empresa.EliminarGrupo(grupo); //elimino obrero del grupo(lista grupo)
 				
-				
-				empresa.EliminaObrero(obreroaeliminar);
+				empresa.EliminaObrero(obreroaeliminar);//elimina al obrero del lista de obrero(empresa lista obreros)
 				Console.WriteLine("obrero eliminado correctamente");
 				
 			}
@@ -119,11 +136,14 @@ namespace tpAlgortimos
 		}
 		public static void SubmenudeImpresion(Empresa construccion){
 			Console.WriteLine("--------------------------------");
+//			listado de obreros, de obras en ejecución, de obras finalizadas y de 
+//jefes, porcentaje de obras de remodelación sin finalizar. 
 		Console.WriteLine("Submenú de Impresión:");
   		 Console.WriteLine("1- Listado de obreros");
-    	 Console.WriteLine("2- Listado de obras en ejecución con más del 50% de avance");
+    	 Console.WriteLine("2- Listado de obras en ejecución ");
     	 Console.WriteLine("3- Listado de obras finalizadas");
    		 Console.WriteLine("4- Listado de jefes");
+   		 Console.WriteLine("5-porcentaje de obras de remodelación sin finalizar");
    		 Console.WriteLine("-------------------------------");
    		 int op=int.Parse(Console.ReadLine());
    		 switch (op) {
@@ -157,16 +177,16 @@ namespace tpAlgortimos
 					return elem;
 				}
 			}
-			return null;
+			return null;//vacio=null
 		}
 		public Grupo ObtenerObrerogrupo(int dni){
-			foreach(Grupo elem in this.Grupos){
+			foreach(Grupo elem in this.Grupos){//lista grupo
 				foreach(Obrero emp in elem.INTEGRANTES){
 				if(dni==emp.DNIOBRERO){
 					return elem;
 				}
 				}}
-			return null;
+			return null;//vacio
 		}
 	
 			
@@ -175,6 +195,7 @@ namespace tpAlgortimos
 		public void ContratarObrero(Obrero obrero){
 			this.Obreros.Add(obrero);
 		}
+		//eliminamos al obrero de la empresa(lista obreros)
 		public void EliminaObrero(Obrero obr){
 			this.Obreros.Remove(obr);
 			
@@ -183,10 +204,19 @@ namespace tpAlgortimos
 		public void AgregarGrupo(Grupo g) {
   			this.Grupos.Add(g);
      }
+		//eliminamos al obrero del grupo
 		public void EliminarGrupo(Grupo g){
 			this.Grupos.Remove(g);
 		}
 		public bool ExisteObrero(int dni){
+			
+//			foreach (Obra elem in this.Obras) {
+//				if(dni ==elem.COSTO){
+//					return elem;
+//				}
+//			}
+			
+			
 			foreach (Obrero elem in this.Obreros) {
 				if(dni==elem.DNIOBRERO){
 					return true;
@@ -201,6 +231,8 @@ namespace tpAlgortimos
         Console.WriteLine("Nombre y Apellido: " + element.NOMYAPE);
         Console.WriteLine("Dni: " + element.DNIOBRERO);
         Console.WriteLine("Cargo: " + element.CARGO);
+        Console.WriteLine("sueldo: " + element.SUELDO);
+        Console.WriteLine("legajo: " + element.LEGAJO);
         Console.WriteLine("------------------------");
 		 	}
 		
