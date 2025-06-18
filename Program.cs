@@ -16,63 +16,77 @@ namespace tpAlgortimos
 	{
 		public static void Main(string[] args)
 		{
-			 //creo instancia de empresa
-			Empresa empresa=new Empresa();
-		
-//			Obra ob=new Obra("nombre",4545,45,"remodelacion",12,JefedeObra jede,4545,Grupo Grupo);
-			             
-	  
-			
-			
-			Console.WriteLine("-----------------------------------------------------------");
-			Console.WriteLine("Ingrese la opcion deseada (para finalizar escriba `0´) :");
-			Console.WriteLine("1- Contratar un nuevo obrero");
-			Console.WriteLine("2- eliminar un obreros");
-			Console.WriteLine("3- Submenú de impresión: listado de obreros, de obras en ejecución con más del 50% de avance, de obras finalizadas y de jefes");
-			Console.WriteLine("4- Agregar una obra y asignarle un jefe. Se debe crear el jefe y asociarle el grupo de obreros que va a dirigir. Verificar que haya grupo libre; en caso contrario se debe levantar una excepción que informe lo sucedido.");
-			Console.WriteLine("5- Modificar el estado de avance de una obra. Si el estado de avance llega al 100% la obra debe darse por finalizada, se elimina del listado de obras en ejecución y se guarda en el de obras finalizadas");
-			Console.WriteLine("6- Dar de baja a un jefe ");
-			Console.WriteLine("-----------------------------------------------------------");
-			int opcion=int.Parse(Console.ReadLine());
-			
-			while (opcion!=0) {
-						//agrego un obrero a la empresa y al grupo obrero
-				switch (opcion) {
-					case 1:
-						AgregarObrero(empresa);
-						break;
-					case 2:
-						Eliminar_Obrero(empresa);
-						break;
-					case 3:
-						SubmenudeImpresion(empresa);
-						break;
-					default:
-						Console.WriteLine("Opción no válida.");
-						break;				}
-
-				Console.WriteLine("-----------------------------------------------------");
-		    Console.WriteLine("Ingrese la opcion deseada (para finalizar escriba `0´) :");
-			Console.WriteLine("1- Contratar un nuevo obrero");
-			Console.WriteLine("2- eliminar un obreros");
-			Console.WriteLine("3- Submenú de impresión: listado de obreros, de obras en ejecución con más del 50% de avance, de obras finalizadas y de jefes");
-			Console.WriteLine("4- Agregar una obra y asignarle un jefe. Se debe crear el jefe y asociarle el grupo de obreros que va a dirigir. Verificar que haya grupo libre; en caso contrario se debe levantar una excepción que informe lo sucedido.");
-			Console.WriteLine("5- Modificar el estado de avance de una obra. Si el estado de avance llega al 100% la obra debe darse por finalizada, se elimina del listado de obras en ejecución y se guarda en el de obras finalizadas");
-			Console.WriteLine("6- Dar de baja a un jefe ");
-			Console.WriteLine("---------------------------------------------------------");
-			opcion=int.Parse(Console.ReadLine());
-			}
-			
-			
-			Console.Write("Press any key to continue . . . ");
+			Console.WriteLine("----------BIENVENIDO AL SOFTWARE DE EMPRESAS DE CONSTRUCCION----------");
+			Empresa empresa=new Empresa();  //creo instancia de empresa
+			MenuPrincipal(empresa);
+			Console.Write("Presione cualquier tecla para salir. . . ");
 			Console.ReadKey(true);
 		}
-		
-		
-		
-		
-		
-		
+		public static void MenuPrincipal(Empresa emp)
+		{      
+			int opcion = -1; // se inicia con un valor que asegure que el bucle se ejecute al menos una vez
+    			while (opcion != 0)
+    			{      
+        			Console.WriteLine("------MENU PRINCIPAL--------");
+        			Console.WriteLine("---Ingrese la opcion deseada---");
+        			Console.WriteLine("1- Contratar un nuevo obrero");
+        			Console.WriteLine("2- Eliminar un obreros");
+        			Console.WriteLine("3- Submenu de impresion: listado de obreros, de obras en ejecucion, de obras finalizadas y de jefes, porcentaje de obras de remodelacion sin finalizar");
+        			Console.WriteLine("4- Contratar a un jefe de obra");
+        			Console.WriteLine("5- Modificar el estado de avance de una obra. Si el estado de avance llega al 100% la obra debe darse por finalizada, se elimina del listado de obras en ejecución y se guarda en el de obras finalizadas");
+        			Console.WriteLine("6- Dar de baja a un jefe ");
+        			Console.WriteLine("7- Agregar obra");
+        			Console.WriteLine("0- Salir");
+        			Console.WriteLine("-----------------------------------------------------------");
+
+        			//captura la opcion manejando posibles errores de entrada (ej. no ingresa un numero, ingresa )
+        			try
+        			{
+            				opcion = int.Parse(Console.ReadLine());
+        			}
+        			catch (FormatException)
+        			{
+					
+            				Console.WriteLine("!!!ERROR!!! usted ingreso un valor no numerico,ingrese un número");
+            				opcion = -1; // establece un valor inválido para que el bucle se repita
+            				continue; // vuelve al inicio del bucle
+        			}
+
+        			// si la opción no es 0 y es válida ejecuta el menu
+        			if (opcion >= 1 && opcion <= 7)
+        			{
+           		 		switch (opcion)
+            				{
+                			case 1:      
+                    			    AgregarObrero(emp);
+                    			    break;
+                			case 2:
+                    			    Eliminar_Obrero(emp);
+                    			    break;
+                			case 3:
+                    			    SubmenudeImpresion(emp);
+                    			    break;
+                			case 4:
+                    			    ContratarJefedeObra(emp);
+                    			    break;
+                			case 5:
+                    			   ModificarEstadoAvance(emp);
+                    			   break;
+                			case 6:
+                    			   DarDeBajaJefe(emp);
+                    			   break;
+                			case 7:
+                    			   AgregarObras(emp);
+                    			   break;
+            				}
+        			}
+        			else if(opcion==0)
+        				Console.WriteLine("usted salio del programa");
+        			else 
+        				Console.WriteLine("!!!ERROR!!! la opcion ingresada no es valida, ingrese un numero entre 0 o 7: ");
+				}	
+		}
+	
 		public static void AgregarObrero(Empresa emp){
 						Console.WriteLine("Ingrese los datos del Obrero: ");
 						Console.WriteLine("Ingrese el nombre y apellido: ");
